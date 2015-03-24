@@ -5,11 +5,11 @@ from __future__ import absolute_import
 import numpy as np
 import matplotlib.animation
 import matplotlib.pyplot as plt
-
 from sunpy.map import GenericMap
-
 from sunpy.visualization.mapcubeanimator import MapCubeAnimator
 from sunpy.util import expand_list
+from sunpy.physics.transforms.solar_rotation import mapcube_solar_derotate
+
 
 __all__ = ['MapCube']
 
@@ -283,3 +283,53 @@ class MapCube(object):
         Return all the meta objects as a list.
         """
         return [m.meta for m in self.maps]
+
+
+    def solar_derotate(self, **kwargs):
+        """
+        Apply the function `sunpy.physics.transforms.solar_rotation.mapcube_solar_derotate`
+        to the mapcube.  This function moves the layers in a mapcube according
+        to the value of the shift keyword in kwargs. If no explicit shifts are
+        passed in, then the function calculates the shift that must be applied
+        to each layer of a mapcube in order to compensate for solar rotation.
+        The center of the map is used to calculate the position of each
+        mapcube layer.  Shifts are calculated relative to a specified layer in
+        the mapcube.
+        When using this functionality, it is a good idea to check that the
+        shifts that were applied to were reasonable and expected.  One way of
+        checking this is to animate the original mapcube, animate the derotated
+        mapcube, and compare the differences you see to the calculated shifts.
+
+        An example use is as follows.  If you select data from the SDO cutout
+        service, it is common to not use the solar tracking implemented by this
+        service.  This is because (at time of writing) the solar tracking
+        implemented by that service moves the image by single pixels at a time.
+        This is not optimal for many use cases, as it introduces artificial jumps
+        in the data.  So with solar tracking not chosen, the selected area is
+        like a window through which you can see the Sun rotating underneath.
+
+        Please consult the docstrings of `sunpy.physics.transforms.solar_rotation.mapcube_solar_derotate`
+        and `sunpy.physics.transforms.solar_rotation.calculate_solar_rotate_shift
+        to find out more.
+
+        Parameters
+        ----------
+        self : `sunpy.map.MapCube`
+            A mapcube of shape (ny, nx, nt), where nt is the number of layers
+            in the mapcube.
+
+        **kwargs
+            All the keywords accepted by `sunpy.physics.transforms.solar_rotation.mapcube_solar_derotate`.
+
+        Returns
+        -------
+        `sunpy.map.mapcube`
+            A SunPy MapCube object that has had the `sunpy.physics.transforms.solar_rotation.mapcube_solar_derotate`
+            function applied to it.  Please see the docstring for that
+            function to find out more.
+
+        Example
+        --------
+        >>> derotated_mc = mc.solar_derotate()
+        """
+        return mapcube_solar_derotate(self, **kwargs)
