@@ -66,10 +66,10 @@ class Chaincode(np.ndarray):
                                       np.asarray(coordinates)))
 
     def BoundingBox(self):
-        '''
+        """
         Extract the coordinates of the chaincode
         [[x0,x1],[y0,y1]]
-        '''
+        """
         bb = np.zeros((2, 2))
         bb[:, 0] = self.coordinates.min(1)
         bb[:, 1] = self.coordinates.max(1)
@@ -84,19 +84,19 @@ class Chaincode(np.ndarray):
         pass
 
     def subBoundingBox(self, xedge=None, yedge=None):
-        '''
+        """
         Extract the x or y boundaries of the chaincode from
         a defined limits xedge or yedge.
-        '''
-# It needs to check whether the input are lists and with 2 elements..
-#        try:
-#            if (type(xedge) == list) or (type(yedge) == list):
-#
-        if xedge != None:
+        """
+        # It needs to check whether the input are lists and with 2 elements..
+        #        try:
+        #            if (type(xedge) == list) or (type(yedge) == list):
+
+        if xedge is not None:
             edge = xedge
             IndexMask = 0  # we want to mask X
             IndexValue = 1  # we want to extract the MinMax from Y
-        elif yedge != None:
+        elif yedge is not None:
             edge = yedge
             IndexMask = 1
             IndexValue = 0
@@ -105,6 +105,7 @@ class Chaincode(np.ndarray):
             return None
         mask = (self.coordinates[IndexMask, :] >= edge[0]) & \
             (self.coordinates[IndexMask, :] <= edge[1])
-# Should the edges be included?
+
+        # Should the edges be included?
         mx = np.ma.masked_array(self.coordinates[IndexValue, :], mask=(~mask))
         return [mx.min(), mx.max()]

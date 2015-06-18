@@ -3,12 +3,12 @@ from __future__ import absolute_import
 from sunpy.time import TimeRange
 from sunpy.time import parse_time
 
-__all__ = ['roi']
+__all__ = ['Roi']
 
 
-class roi(object):
+class Roi(object):
     """
-    A generalized region of interest (ROI) object
+    A generalized region of interest (ROI) object.
 
     Parameters
     ----------
@@ -70,7 +70,7 @@ class roi(object):
             self.description = None
 
         # optional description of where the ROI came from
-        if source == None:
+        if source is None:
             self.source = "Unknown"
         else:
             self.source = source
