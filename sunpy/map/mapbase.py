@@ -424,6 +424,13 @@ scale:\t\t [{dx}, {dy}]
         else:
             return self._rotation_matrix_from_crota()
 
+    @property
+    def roi(self):
+        """Region of interest of the map"""
+        raise NotImplementedError(
+    "The region of interest (ROI) of a map has not been implemented yet.")
+
+
     def _rotation_matrix_from_crota(self):
         """
         This method converts the deprecated CROTA FITS kwargs to the new

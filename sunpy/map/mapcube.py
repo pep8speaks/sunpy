@@ -319,3 +319,9 @@ class MapCube(object):
         Return all the meta objects as a list.
         """
         return [m.meta for m in self.maps]
+
+    @property
+    def roi(self):
+        """Region of interest of the mapcube"""
+        raise NotImplementedError(
+    "The region of interest (ROI) of a mapcube has not been implemented yet.")

@@ -27,8 +27,7 @@ class Polygon:
 
     """
 
-
-    @u.quantity_input(coords=u.deg)
+    @u.quantity_input(coordinates=u.deg)
     def __init__(self, coordinates, coordinate_system, time=None):
 
         # Set the co-ordinates of the polygon
