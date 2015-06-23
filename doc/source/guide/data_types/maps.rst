@@ -89,19 +89,19 @@ file.
 4. Getting at the data
 ----------------------
 The data in a SunPy Map object is accessible through the data attribute.
-Currently, the data is implemented as a NumPy ndarray, so for example, to get
+Currently, the data is implemented as a `NumPy ndarray <http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html>`_, so for example, to get
 the 0th element in the array ::
 
     my_map.data[0,0]
     my_map.data[0][0]
 
 One important fact to remember which is initially confusing is that the first index is for the
-y direction while the second index is for the x direction! For more information about indexing
-please refer to the `Numpy documentation <http://www.scipy.org/Tentative_NumPy_Tutorial#head-864862d3f2bb4c32f04260fac61eb4ef34788c4c>`.
+y direction while the second index is for the x direction. For more information about indexing
+please refer to the `Numpy documentation <http://www.scipy.org/Tentative_NumPy_Tutorial#head-864862d3f2bb4c32f04260fac61eb4ef34788c4c>`_.
 Common ndarray attributes, such as shape and dtype, are accessible through the SunPy Map object ::
 
-    my_map.shape
-    my_map.dtype
+    my_map.data.shape
+    my_map.data.dtype
 
 If you'd like to use the data in a SunPy Map object elsewhere, you can use ::
 
