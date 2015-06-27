@@ -53,7 +53,11 @@ header is given then some default values as assumed. Here is a simple example::
     header = {'cdelt1': 10, 'cdelt2': 10, 'telescop':'sunpy'}
     my_map = sunpy.map.Map(data, header)
 
-The format of the header follows the FITS standard.
+The format of the header follows the FITS standard.  In this case, the Map object understands the
+units of cdelt1 and cdelt2 as arcseconds per pixel, and stores them accordingly::
+
+    >>> my_map.scale
+    >>> Pair(x=<Quantity 10.0 arcsec / pix>, y=<Quantity 10.0 arcsec / pix>)
 
 3. Inspecting maps
 ------------------
@@ -98,7 +102,8 @@ the 0th element in the array ::
 One important fact to remember which is initially confusing is that the first index is for the
 y direction while the second index is for the x direction. For more information about indexing
 please refer to the `Numpy documentation <http://www.scipy.org/Tentative_NumPy_Tutorial#head-864862d3f2bb4c32f04260fac61eb4ef34788c4c>`_.
-Common ndarray attributes, such as shape and dtype, are accessible through the SunPy Map object ::
+Common ndarray attributes, such as shape and dtype, are accessible through the data
+attribute of the SunPy Map object ::
 
     my_map.data.shape
     my_map.data.dtype
