@@ -57,7 +57,7 @@ The format of the header follows the FITS standard.  In this case, the Map objec
 units of cdelt1 and cdelt2 as arcseconds per pixel, and stores them accordingly::
 
     >>> my_map.scale
-    >>> Pair(x=<Quantity 10.0 arcsec / pix>, y=<Quantity 10.0 arcsec / pix>)
+    Pair(x=<Quantity 10.0 arcsec / pix>, y=<Quantity 10.0 arcsec / pix>)
 
 3. Inspecting maps
 ------------------
