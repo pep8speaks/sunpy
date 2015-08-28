@@ -1074,13 +1074,14 @@ scale:\t\t {scale}
             reshaped = reshape_image_to_4d_superpixel(self.data.copy(),
                                                       [dimensions.value[1], dimensions.value[0]])
         else:
-            reshaped = reshape_image_to_4d_superpixel(np.ma.array(np.asarray(self.data.copy()), mask=self.mask.copy()),
-                                                  [dimensions.value[1], dimensions.value[0]])
+            reshaped = reshape_image_to_4d_superpixel(np.ma.array(self.data.copy(), mask=self.mask.copy()),
+                                                      [dimensions.value[1], dimensions.value[0]])
+
         if method == 'sum':
             new_data = reshaped.sum(axis=3).sum(axis=1)
         elif method == 'average':
             new_data = ((reshaped.sum(axis=3).sum(axis=1)) /
-                    np.float32(dimensions[0] * dimensions[1]))
+                        np.float32(dimensions[0] * dimensions[1]))
 
         # Update image scale and number of pixels
         new_map = deepcopy(self)
