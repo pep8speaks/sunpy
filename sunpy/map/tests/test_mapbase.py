@@ -25,9 +25,17 @@ from sunpy.tests.helpers import figure_test, skip_wcsaxes
 
 testpath = sunpy.data.test.rootdir
 
+
 @pytest.fixture
 def aia171_test_map():
     return sunpy.map.Map(os.path.join(testpath, 'aia_171_level1.fits'))
+
+
+@pytest.fixture
+def aia171_test_map_mask(aia171_test_map):
+    mask = np.zeros_like(aia171_test_map.data, dtype=bool)
+    mask[0:mask.shape[0]/2, 0:mask.shape[1]/2] = True
+    return mask
 
 
 @pytest.fixture
@@ -288,7 +296,7 @@ def test_resample_metadata(generic_map, sample_method, new_dimensions):
             assert resampled_map.meta[key] == generic_map.meta[key]
 
 
-def test_superpixel(aia171_test_map):
+def test_superpixel(aia171_test_map, aia171_test_map_mask):
     dimensions = (2, 2)*u.pix
     superpixel_map_sum = aia171_test_map.superpixel(dimensions)
     assert_quantity_allclose(superpixel_map_sum.dimensions[1], aia171_test_map.dimensions[1]/dimensions[1]*u.pix)
@@ -409,20 +417,14 @@ def test_plot_aia171_nowcsaxes(aia171_test_map):
 
 @skip_wcsaxes
 @figure_test
-def test_plot_masked_aia171(aia171_test_map):
-    shape = aia171_test_map.data.shape
-    mask = np.zeros_like(aia171_test_map.data, dtype=bool)
-    mask[0:shape[0]/2, 0:shape[1]/2] = True
-    masked_map = sunpy.map.Map(np.ma.array(aia171_test_map.data, mask=mask), aia171_test_map.meta)
+def test_plot_masked_aia171(aia171_test_map, aia171_test_map_mask):
+    masked_map = sunpy.map.Map(np.ma.array(aia171_test_map.data, mask=aia171_test_map_mask), aia171_test_map.meta)
     masked_map.plot()
 
 
 @figure_test
-def test_plot_masked_aia171_nowcsaxes(aia171_test_map):
-    shape = aia171_test_map.data.shape
-    mask = np.zeros_like(aia171_test_map.data, dtype=bool)
-    mask[0:shape[0]/2, 0:shape[1]/2] = True
-    masked_map = sunpy.map.Map(np.ma.array(aia171_test_map.data, mask=mask), aia171_test_map.meta)
+def test_plot_masked_aia171_nowcsaxes(aia171_test_map, aia171_test_map_mask):
+    masked_map = sunpy.map.Map(np.ma.array(aia171_test_map.data, mask=aia171_test_map_mask), aia171_test_map.meta)
     ax = plt.gca()
     masked_map.plot(axes=ax)
 
