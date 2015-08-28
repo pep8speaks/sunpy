@@ -1067,7 +1067,11 @@ scale:\t\t {scale}
         #   coordinates in a Map are at pixel centers
 
         # Make a copy of the original data and perform reshaping
-        reshaped = reshape_image_to_4d_superpixel(self.data.copy(),
+        if self.mask is None:
+            reshaped = reshape_image_to_4d_superpixel(self.data.copy(),
+                                                      [dimensions.value[1], dimensions.value[0]])
+        else:
+            reshaped = reshape_image_to_4d_superpixel(np.ma.array(np.asarray(self.data.copy()), mask=self.mask.copy()),
                                                   [dimensions.value[1], dimensions.value[0]])
         if method == 'sum':
             new_data = reshaped.sum(axis=3).sum(axis=1)
