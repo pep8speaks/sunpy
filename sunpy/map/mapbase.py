@@ -626,6 +626,21 @@ scale:\t\t {scale}
 
 # #### Image processing routines #### #
 
+    def _maskify_data(self):
+        """Returns a masked numpy array if a mask is present.
+
+        Some image processing routines need to respect a mask if it is
+        present.  This routine returns a masked array if it is present.  The
+        masked array can be used in image processing routines.  Routines that
+        use numpy will manipulate the masked map data according to numpy's
+        rules.
+        """
+
+        if self.mask is not None:
+            return self.data
+        else:
+            return np.ma.array(np.asarray(self.data), mask=self.mask)
+
     @u.quantity_input(dimensions=u.pixel)
     def resample(self, dimensions, method='linear'):
         """Returns a new Map that has been resampled up or down
@@ -1071,7 +1086,7 @@ scale:\t\t {scale}
 
         # Make a copy of the original data and perform reshaping
         reshaped = reshape_image_to_4d_superpixel(self.data.copy(),
-                                                  [dimensions.value[1], dimensions.value[0]])
+                                                  [dimensions[1].value, dimensions[0].value])
         if method == 'sum':
             new_data = reshaped.sum(axis=3).sum(axis=1)
         elif method == 'average':
@@ -1363,10 +1378,7 @@ scale:\t\t {scale}
             imshow_args.update({'extent': list(self.xrange.value) + list(self.yrange.value)})
         imshow_args.update(imshow_kwargs)
 
-        if self.mask is None:
-            ret = axes.imshow(self.data, **imshow_args)
-        else:
-            ret = axes.imshow(np.ma.array(np.asarray(self.data), mask=self.mask), **imshow_args)
+        ret = axes.imshow(self._maskify_data(self), **imshow_args)
 
         if wcsaxes_compat.is_wcsaxes(axes):
             wcsaxes_compat.default_wcs_grid(axes)
@@ -1375,7 +1387,6 @@ scale:\t\t {scale}
         plt.sca(axes)
         plt.sci(ret)
         return ret
-
 
 class InvalidHeaderInformation(ValueError):
     """Exception to raise when an invalid header tag value is encountered for a
