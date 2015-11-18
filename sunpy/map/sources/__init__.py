@@ -7,7 +7,7 @@ will be subclasses of the :mod`sunpy.map.Map` class.
 from __future__ import absolute_import, division, print_function
 __all__ = ['XRTMap', 'SOTMap', 'SWAPMap', 'RHESSIMap', 'AIAMap', 'HMIMap',
            'EITMap', 'LASCOMap', 'MDIMap', 'EUVIMap', 'CORMap', 'HIMap',
-           'SXTMap', 'SJIMap', 'TRACEMap']
+           'SXTMap', 'SJIMap', 'TRACEMap', 'CoimbraSpectroheliographMap']
 
 from .. map_factory import Map
 
@@ -43,3 +43,6 @@ Map.register(SJIMap, SJIMap.is_datasource_for)
 
 from .trace import TRACEMap
 Map.register(TRACEMap, TRACEMap.is_datasource_for)
+
+from .coimbra import CoimbraSpectroheliographMap
+Map.register(CoimbraSpectroheliographMap, CoimbraSpectroheliographMap.is_datasource_for)
