@@ -1,6 +1,6 @@
-#Author :Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
-#This module was developed under funding provided by
-#Google Summer of Code 2014
+# Author :Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
+# This module was developed under funding provided by
+# Google Summer of Code 2014.
 
 import datetime
 from collections import OrderedDict
@@ -79,7 +79,7 @@ class QueryResponse(list):
                                ('End Time', []),
                                ('Source', []),
                                ('Instrument', [])))
-        for i,qrblock in enumerate(self):
+        for i, qrblock in enumerate(self):
             columns['Start Time'].append((qrblock.time.start.date() + datetime.timedelta(days=i)).strftime(TIME_FORMAT))
             columns['End Time'].append((qrblock.time.end.date() + datetime.timedelta(days=i)).strftime(TIME_FORMAT))
             columns['Source'].append(qrblock.source)
@@ -94,7 +94,10 @@ class GenericClient(object):
         self.map_ = {}
 
     def _makeargs(self, *args, **kwargs):
-        '''Map attributes in the query to internal dictionary'''
+
+        """
+        Map attributes in the query to internal dictionary.
+        """
         for elem in args:
             if issubclass(elem.__class__, Time):
                 self.map_['TimeRange'] = TimeRange(elem.start, elem.end)
@@ -106,7 +109,6 @@ class GenericClient(object):
                 except Exception:
                     self.map_[elem.__class__.__name__] = None
         self._makeimap()
-
 
     def _get_url_for_timerange(cls, timerange, **kwargs):
         raise NotImplementedError
@@ -120,7 +122,8 @@ class GenericClient(object):
 
     def query(self, *args, **kwargs):
         """
-        Query the web service of the source for urls pertaining to incoming arguements.
+        Query the web service of the source for urls pertaining to incoming
+        arguments.
         """
         GenericClient._makeargs(self, *args, **kwargs)
         urls = self._get_url_for_timerange(self.map_.get('TimeRange'), **kwargs)

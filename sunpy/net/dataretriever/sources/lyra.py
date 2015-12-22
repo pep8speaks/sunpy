@@ -1,6 +1,6 @@
-#Author: Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
-#This module was developed under funding provided by
-#Google Summer of Code 2014
+# Author: Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
+# This module was developed under funding provided by
+# Google Summer of Code 2014.
 
 import datetime
 import urlparse
@@ -45,7 +45,7 @@ class LYRAClient(GenericClient):
         """
         if not isinstance(date, datetime.date):
             raise ValueError("This method requires a date")
-        filename = "lyra_{0:%Y%m%d-}000000_lev{1:d}_std.fits".format(date, kwargs.get('level',2))
+        filename = "lyra_{0:%Y%m%d-}000000_lev{1:d}_std.fits".format(date, kwargs.get('level', 2))
         base_url = "http://proba2.oma.be/lyra/data/bsd/"
         url_path = urlparse.urljoin(date.strftime('%Y/%m/%d/'), filename)
         return urlparse.urljoin(base_url, url_path)
@@ -73,8 +73,8 @@ class LYRAClient(GenericClient):
         boolean
             answer as to whether client can service the query
         """
-        chkattr =  ['Time', 'Instrument', 'Level']
-        chklist =  [x.__class__.__name__ in chkattr for x in query]
+        chkattr = ['Time', 'Instrument', 'Level']
+        chklist = [x.__class__.__name__ in chkattr for x in query]
         for x in query:
             if x.__class__.__name__ == 'Instrument' and x.value == 'lyra':
                 return all(chklist)

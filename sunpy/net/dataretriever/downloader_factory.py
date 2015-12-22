@@ -1,6 +1,6 @@
 # Author: Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
 # This module was developed under funding provided by
-# Google Summer of Code 2014
+# Google Summer of Code 2014.
 
 from sunpy.util.datatype_factory_base import BasicRegistrationFactory
 from sunpy.util.datatype_factory_base import NoMatchError
@@ -21,7 +21,7 @@ class UnifiedResponse(list):
             block[0].client = block[1]
             tmplst.append(block[0])
         super(UnifiedResponse, self).__init__(tmplst)
-        self._numfile =0
+        self._numfile = 0
         for qblock in self:
             self._numfile += len(qblock)
 
@@ -40,7 +40,7 @@ class downloadresponse(list):
     """
     List of Results object returned by clients servicing the query.
     """
-    def __init__(self,lst):
+    def __init__(self, lst):
 
         super(downloadresponse, self).__init__(lst)
 
@@ -79,22 +79,36 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
 
     def search(self, *query):
         """
-        Query for data in form of multiple parameters.
-        Examples
-        --------
-        Query for LYRALightCurve data from timerange('2012/3/4','2012/3/6')
-        >>> unifresp = Fido.query(Time('2012/3/4','2012/3/6'),Instrument('lyra'))
-        >>> unifresp = Fido.query(Time('2012/3/4','2012/3/6'),Instrument('norh') | Instrument('rhessi'))
-        >>> unifresp = Fido.query(Time('2012/3/4','2012/3/6'),Instrument('AIA'),
-                       Wave(304, 304),Sample(60*10))
+        Query for data using multiple parameters.
 
         Parameters
         ----------
-        query: Mutiple parameters,VSO-styled query. Attributes from JSOC, VSO both can be used.
+        query: A list of comma-separated Multiple parameters, VSO-styled query. Attributes from both the
+        JSOC and the VSO can be used.
+
+        Examples
+        --------
+        Most queries will specify a time range and an instrument
+
+        Query for LYRA data from in the time range 2012/03/04 to 2012/03/06.
+        >>> from sunpy.net.dataretriever import Fido
+        >>> from sunpy.net.vso.attrs import Time, Instrument
+        >>> unifresp = Fido.search(Time('2012/03/04','2012/03/06'), Instrument('lyra'))
+
+        Get Nobeyama and RHESSI time series data in the same time range
+        >>> unifresp = Fido.search(Time('2012/3/4','2012/3/6'), Instrument('norh') | Instrument('rhessi'))
+
+        Get one AIA 304 angstrom image every 600 seconds in the specified
+        timerange.
+        >>> import astropy.units as u
+        >>> from sunpy.net.vso.attrs import Wavelength, Sample
+        >>> unifresp = Fido.search(Time('2012/3/4','2012/3/6'), Instrument('AIA'),
+                       Wavelength(304*u.AA, 304*u.AA), Sample(60*10*u.s))
 
         Returns
         -------
-        UnifiedResponse object: Container of responses returned by clients servicing query.
+        UnifiedResponse object:
+        Container of responses returned by clients servicing the query.
 
         Notes
         -----
@@ -127,7 +141,7 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
         Example
         --------
         >>> unifresp = Fido.query(Time('2012/3/4','2012/3/6'),Instrument('AIA'))
-        >>> downresp = Fido.get(unifresp)
+        >>> downresp = Fido.fetch(unifresp)
         >>> file_paths = downresp.wait()
         """
         reslist =[]
@@ -143,7 +157,6 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
 
     def __call__(self, *args, **kwargs):
         pass
-
 
     def _check_registered_widgets(self, *args, **kwargs):
         """Factory helper function"""
@@ -179,4 +192,4 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
         return tmpclient.query(*args), tmpclient
 
 
-Fido = UnifiedDownloaderFactory(additional_validation_functions = ['_can_handle_query'])
+Fido = UnifiedDownloaderFactory(additional_validation_functions=['_can_handle_query'])
