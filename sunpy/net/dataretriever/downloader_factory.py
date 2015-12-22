@@ -107,24 +107,26 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
 
         Returns
         -------
-        UnifiedResponse object:
+        `UnifiedResponse`
         Container of responses returned by clients servicing the query.
 
         Notes
         -----
         and_ tranforms query into disjunctive normal form
         ie. query is now of form A & B or ((A & B) | (C & D))
-        This helps in modularising query into parts and handling each of the parts individually.
+        This helps in modularising query into parts and handling each of the
+        parts individually.
         """
         query = attr.and_(*query)
         return UnifiedResponse(qwalker.create(query, self))
 
     def fetch(self, qr, wait=True, progress=True, **kwargs):
         """
-        Downloads the files pointed at by URLS contained within UnifiedResponse Object.
+        Downloads the files at the URLs contained within UnifiedResponse object.
+
         Parameters
         ----------
-        qr : UnifiedResponse Object
+        qr : ` Object
             Container returned by query method.
 
         wait : `bool`
@@ -140,11 +142,11 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
 
         Example
         --------
-        >>> unifresp = Fido.query(Time('2012/3/4','2012/3/6'),Instrument('AIA'))
+        >>> unifresp = Fido.query(Time('2012/3/4','2012/3/6'), Instrument('AIA'))
         >>> downresp = Fido.fetch(unifresp)
         >>> file_paths = downresp.wait()
         """
-        reslist =[]
+        reslist = []
         for block in qr:
             reslist.append(block.client.get(block, **kwargs))
 
@@ -171,7 +173,7 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
             if self.default_widget_type is None:
                 raise NoMatchError("Query {0} can not be handled in its current form".format(args))
             else:
-                return  [self.default_widget_type]
+                return [self.default_widget_type]
         elif n_matches > 1:
             # This is a hack, VSO services all Instruments.
             # TODO: VSOClient._can_handle_query should know what values of

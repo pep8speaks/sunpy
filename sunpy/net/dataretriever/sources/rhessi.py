@@ -1,6 +1,6 @@
-#Author: Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
-#This module was developed under funding provided by
-#Google Summer of Code 2014
+# Author: Rishabh Sharma <rishabh.sharma.gunner@gmail.com>
+# This module was developed under funding provided by
+# Google Summer of Code 2014
 
 from sunpy.instr import rhessi
 
@@ -21,7 +21,6 @@ class RHESSIClient(GenericClient):
         """
         url = rhessi.get_obssum_filename(timerange)
         return [url]
-
 
     def _makeimap(self):
         """
@@ -46,8 +45,8 @@ class RHESSIClient(GenericClient):
         boolean
             answer as to whether client can service the query
         """
-        chkattr =  ['Time', 'Instrument']
-        chklist =  [x.__class__.__name__ in chkattr for x in query]
+        chkattr = ['Time', 'Instrument']
+        chklist = [x.__class__.__name__ in chkattr for x in query]
         for x in query:
             if x.__class__.__name__ == 'Instrument' and x.value == 'rhessi':
                 return all(chklist)
