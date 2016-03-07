@@ -1,7 +1,7 @@
 SunPy net
 =========
 
-.. automodapi:: sunpy.net.attrs 
+.. automodapi:: sunpy.net.attrs
 
 .. automodapi:: sunpy.net
 
@@ -23,7 +23,7 @@ SunPy net
 
 Dataretriever
 -------------
-Dataretriever or Unified Downloader is intended to be the de-facto download client for all Sunpy objects in the future.
+Dataretriever or Unified Downloader is intended to be the de-facto download client for all SunPy objects in the future.
 
 .. automodapi:: sunpy.net.dataretriever
 

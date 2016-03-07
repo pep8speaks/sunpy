@@ -100,18 +100,31 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
         --------
         Query for LYRALightCurve data for the timerange ('2012/3/4','2012/3/6')
 
+        >>> from sunpy.net import Fido
         >>> from sunpy.net.vso.attrs import Time, Instrument
         >>> unifresp = Fido.search(Time('2012/3/4', '2012/3/6'), Instrument('lyra'))
 
-        Query for data from Nobeyama Radioheliograph and RHESSI
+        or equivalently
 
-        >>> unifresp = Fido.search(Time('2012/3/4', '2012/3/6'), Instrument('norh') | Instrument('rhessi'))
+        >>> response = Fido.search(Time('2012/3/4', '2012/3/6') & Instrument('lyra'))
+
+        Query for data from both the Nobeyama Radioheliograph and RHESSI
+
+        >>> response = Fido.search(Time('2012/3/4', '2012/3/6'), Instrument('norh') | Instrument('rhessi'))
+
+        or equivalently
+
+        >>> response = Fido.search(Time('2012/3/4', '2012/3/6') & (Instrument('norh') | Instrument('rhessi')))
 
         Query for 304 Angstrom SDO AIA data with a cadence of 10 minutes
 
         >>> import astropy.units as u
         >>> from sunpy.net.vso.attrs import Time, Instrument, Wavelength, Sample
-        >>> unifresp = Fido.search(Time('2012/3/4', '2012/3/6'), Instrument('AIA'), Wavelength(304*u.angstrom, 304*u.angstrom), Sample(10*u.minute))
+        >>> response = Fido.search(Time('2012/3/4', '2012/3/6'), Instrument('AIA'), Wavelength(304*u.angstrom, 304*u.angstrom), Sample(10*u.minute))
+
+        or equivalently
+
+        >>> response = Fido.search(Time('2012/3/4', '2012/3/6') & Instrument('AIA') & Wavelength(304*u.angstrom, 304*u.angstrom) & Sample(10*u.minute))
 
         Parameters
         ----------
@@ -120,6 +133,11 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
             requested data.  The query is specified using attributes from the
             VSO and the JSOC.  The query can mix attributes from the VSO and
             the JSOC.
+
+            Queries can be constructed from attributes as follows. A single
+            comma between search parameters indicates a logical AND.
+            Equivalently, a '&' can be used.  The pipe symbol '|' indicates a
+            logical OR.
 
         Returns
         -------
@@ -160,7 +178,7 @@ class UnifiedDownloaderFactory(BasicRegistrationFactory):
         --------
         >>> from sunpy.net.vso.attrs import Time, Instrument
         >>> unifresp = Fido.search(Time('2012/3/4','2012/3/6'), Instrument('AIA'))
-        >>> downresp = Fido.get(unifresp)
+        >>> downresp = Fido.fetch(unifresp)
         >>> file_paths = downresp.wait()
         """
         reslist = []

@@ -209,3 +209,29 @@ downloaded then append ``.wait()`` to the ``get`` command above, i.e.,
 More information on the options available can be found through the
 standard Python ``help`` command.
 
+-------------------------------
+Fido: Getting data from the net
+-------------------------------
+
+Fido is the recommended module for searching and acquiring solar and heliospheric data
+in SunPy.  It provides a single interface that enables users to query and obtain data
+through the VSO, the JSOC and other web locations.  It is a unified interface in that
+Fido recognizes both SunPy VSO and JSOC attributes.
+
+SunPy maintains a list of locations where data from a given instrument can be found.
+In the case when data can be found via the VSO and an instrument-specific location,
+Fido defaults to using the instrument-specific location.  This is because the VSO
+commonly acts as an intermediary between your request and the instrument-specific
+location; therefore, going direct to the instrument-specific location is liable to
+provide a speedier service.  If there are data that you are interested in that are
+not currently available via the VSO and you know where it can be found online, please
+contact the SunPy developers at sunpy-dev@googlegroups.com for inclusion via the
+Fido interface.
+
+
+
+Any VSO or JSOC attributes can be used in any combinations.
+
+    >>> from sunpy.net import Fido
+
+
