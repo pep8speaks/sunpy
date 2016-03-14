@@ -6,6 +6,7 @@ Acquiring Data with SunPy
     :maxdepth: 2
 
     sample-data
+    fido
     vso
     hek
     helioviewer
