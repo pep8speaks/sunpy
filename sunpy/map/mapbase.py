@@ -1337,10 +1337,10 @@ scale:\t\t {scale}
             radius = self.rsun_obs.to(u.deg).value
         else:
             radius = self.rsun_obs.value
-        c_kw = {'radius':radius,
-                'fill':False,
-                'color':'white',
-                'zorder':100,
+        c_kw = {'radius': radius,
+                'fill': False,
+                'color': 'white',
+                'zorder': 100,
                 'transform': transform
                 }
         c_kw.update(kwargs)
@@ -1349,6 +1349,31 @@ scale:\t\t {scale}
         axes.add_artist(circ)
 
         return [circ]
+
+    @u.quantity_input(x=u.deg, y=u.deg)
+    def on_disk(self, x, y):
+        """
+        Finds if a pixel is on the disk or not.  This is achieved by
+        comparing the distance of the specified pixel from the center of the
+        Sun to the solar radius.
+
+        Parameters
+        ----------
+
+        x : `astropy.units.Quantity`
+            The x-position of the location.
+
+        y : `astropy.units.Quantity`
+            The y-position of the location.
+
+        Return
+        ------
+
+        bool
+            True indicates that the input location is on the disk.
+
+        """
+        return np.sqrt((x-self.center.x)**2 + (y-self.center.y)**2).to(u.deg).value < self.rsun_obs.to(u.deg).value
 
     @u.quantity_input(bottom_left=u.deg, width=u.deg, height=u.deg)
     def draw_rectangle(self, bottom_left, width, height, axes=None, **kwargs):
