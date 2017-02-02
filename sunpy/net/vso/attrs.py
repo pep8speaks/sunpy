@@ -171,26 +171,29 @@ class Time(Attr, _Range):
 
 class Extent(Attr):
     """
-    Specify the spatial field-of-view of the query.  Not used by the VSO, but
-    included for completeness should it be implemented.  The following contains
-    a possible implementation of the extent attribute.
+    Specify the spatial field-of-view of the query.  Not used by the VSO (as
+    stated by a senior VSO developer), but included for completeness should it
+    be implemented.  The following contains a possible implementation of the
+    extent attribute - this should be updated whenever the VSO implements the
+    extent attribute
 
     Parameters
     ----------
 
     x : sunpy co-ordinate
-        location of the center of the field of view of the extent in one spatial
-        dimension
+        location of the center of the field of view of the extent in the first
+        spatial dimension
 
     y : sunpy co-ordinate
-        location of the center of the field of view of the extent in another
+        location of the center of the field of view of the extent in the second
         spatial dimension
 
     width : sunpy co-ordinate units
-        full width of the field of view in the first spatial direction
+        full width of the field of view in units of the first spatial direction
 
     height : sunpy co-ordinate units
-        full height of the field of view in the first spatial direction
+        full height of the field of view in units of the second spatial
+        direction
 
     atype : ?
         ?
@@ -205,8 +208,6 @@ class Extent(Attr):
         self.length = length
         self.type = atype
     """
-    pass
-
     def collides(self, other):
         return isinstance(other, self.__class__)
 
